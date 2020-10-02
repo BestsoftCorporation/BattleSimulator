@@ -11,7 +11,8 @@ class Army extends Model
         'name',
         'units',
         'strategy',
-        'gameID'
+        'gameID',
+        'status'
     ];
 
     //use HasFactory;

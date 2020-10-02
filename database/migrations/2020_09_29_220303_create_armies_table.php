@@ -19,6 +19,7 @@ class CreateArmiesTable extends Migration
             $table->integer('units');
             $table->integer('strategy')->default(0);
             $table->integer('gameID');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
