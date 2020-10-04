@@ -32,11 +32,15 @@
       </div>
       <div class="form-group">
         <label for="units">Units (80-100):</label>
-        <input type='text' name='units' id='units'>
+        <input type="number" name='units' id='units' min="80" max="100">
       </div>
       <div class="form-group">
         <label for="strategy">Strategy:</label>
-        <input type='text' name='strategy' id='strategy'>
+        <select class="form-control" id="strategy" name="strategy">
+          <option value="1">Random</option>
+          <option value="2">Weakest</option>
+          <option value="3">Strongest</option>
+        </select>
       </div>
       <input type='hidden' name='gameID' id='gameID' value='18'>
       <button type="submit" class="btn btn-default">Create</button>
@@ -46,9 +50,12 @@
     </ul>
     <p>© Battle Simulator by Marko Stojkovic </p>
   </div>
-  
+
 
   <script>
+    var active = null;
+    var attacked = null;
+    var mess = "";
     $("#play").click(function(e) {
       e.preventDefault();
       $.ajax({
@@ -61,6 +68,15 @@
           // alert(json);
           //alert(result['message']);
           $("#response").html(result['message']);
+          mess = result['message'];
+          if (mess.includes("won")) {
+            alert(mess);
+          }
+          if (result['message'].includes('vs')) {
+            var res = result['message'].split("vs");
+            active = res[0];
+            attacked = res[1];
+          }
           $("#armyForm").css("display", "block");
           reloadF();
         },
@@ -94,19 +110,44 @@
 
         success: function(data) {
           $("#ul").html("");
-
+          $("#response").html("");
+          var attack = "";
+          var vic = "";
           jQuery.each(data, function(i, val) {
-            
+            var sign = "list-group-item-success";
+            var text = "";
+
+            if (active != null) {
+
+              if (active == val.id) {
+                text = "ATTACK";
+                sign = "list-group-item-info";
+                attack = val.name + " ATTACK ";
+              }
+              if (attacked == val.id) {
+                text = "ATTACKED";
+                sign = "list-group-item-warning";
+                vic = val.name;
+
+              }
+
+            }
+
 
             if (val.units == 0) {
               $("#ul").append('<li class="list-group-item list-group-item-danger"><b>' + val.name + '</b>   <span style="color:red">units left:' + val.units + '</span>   <span style="color:green">attack strategy:' + val.strategy + '</span> <b>DEAD</b></li>');
-            }else{
-              $("#ul").append('<li class="list-group-item list-group-item-success"><b>' + val.name + '</b>   <span style="color:red">units left:' + val.units + '</span>   <span style="color:green">attack strategy:' + val.strategy + '</span> </li>');
+            } else {
+              $("#ul").append('<li class="list-group-item ' + sign + '"><b>' + val.name + '</b>   <span style="color:red">units left:' + val.units + '</span>   <span style="color:green">attack strategy:' + val.strategy + '</span> <b>' + text + '</b></li>');
             }
             if (i >= 4) {
               document.getElementById("play").disabled = false;
             }
           });
+
+          if (!mess.includes("won")) {
+            $("#response").html(attack + vic);
+          }
+
 
         }
 
@@ -126,7 +167,7 @@
         data: form.serialize(),
         success: function(data) {
           $("#response").html("Game with id " + data.id + " created! Lets now add some armies to the game.");
-
+          $("#ul").css("display", "none");
           $("#armyForm").css("display", "block");
         }
       });
@@ -166,7 +207,7 @@
         data: form.serialize(),
         success: function(data) {
           $("#response").html("Army with id " + data.id + " created! Lets now add some more armies to the game or play round.");
-
+          $("#ul").css("display", "block");
           $("#armyForm").css("display", "block");
         }
       });

@@ -41,7 +41,7 @@ class StartGame extends Controller
                 $w = $this->whoToAttack($value);
 
                 if (Army::find($w) != null) {
-                    $toAttack .= $value['id'] . 'vs' . $w . ";";
+                    $toAttack .= $value['id'] . 'vs' . $w;
                     $this->attack($value, Army::find($w));
                 }
             }
