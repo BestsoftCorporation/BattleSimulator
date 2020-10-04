@@ -23,11 +23,7 @@ class StartGame extends Controller
     public function __invoke(Request $request)
     {
       
-            //return Army::select('units')->where('gameID',3)->whereNotIn('id',  [6])->where('status', '<>', '0')->min('units');
-       // return ['message' => Army::where('units', '=', (Army::select('units')->where('gameID',3)->whereNotIn('id',  [6])->where('status', '<>', '0')->min('units')))->whereNotIn('id',  [6])->get()];
-      
-        //echo Army::select('id')->where('gameID', $_SESSION['game'])->where('status', '1')->count();
-       
+   
         if (!isset($_SESSION['army']) || $_SESSION['army'] >= Army::select('id')->where('gameID', $_SESSION['game'])->where('status', '1')->count()-1) {
             $_SESSION['army'] = 0;
         } else {
@@ -63,16 +59,14 @@ class StartGame extends Controller
 
         $toAttack = 1;
         if ($value['strategy'] == 1) { //RANDOM
-            $rand = rand(1, count(Army::all()));
-            while ($rand == $value['id'] || (Army::find($rand)['status']) == 0) {
-                $rand = rand(1, count(Army::all()));
-            }
-            $toAttack = $rand;
+            
+            $toAttack=Army::select('id')->where('gameID', $_SESSION['game'])->where('id', '<>', $value['id'])->where('status', '<>', '0')->inRandomOrder()->first();
+           
         } else if ($value['strategy'] == 2) { //WEAKEST
-            $toAttack = Army::where('id', '<>', $value['id'])->where('units', '=', (Army::select('units')->where('gameID', $_SESSION['game'])->where('id', '<>', $value['id'])->where('status', '<>', '0')->min('units')))->first()->id;
+            $toAttack = Army::where('id', '<>', $value['id'])->where('gameID', $_SESSION['game'])->where('units', '=', (Army::select('units')->where('gameID', $_SESSION['game'])->where('id', '<>', $value['id'])->where('status', '<>', '0')->min('units')))->first()->id;
             
         } else if ($value['strategy'] == 3) { //STRONGEST
-            $toAttack = Army::where('gameID', $_SESSION['game'])->where('units', '=', (Army::select('units')->where('gameID', $_SESSION['game'])->where('id', '<>', $value['id'])->where('status', '<>', '0')->max('units')))->first()->id;
+            $toAttack = Army::where('id', '<>', $value['id'])->where('gameID', $_SESSION['game'])->where('units', '=', (Army::select('units')->where('gameID', $_SESSION['game'])->where('id', '<>', $value['id'])->where('status', '<>', '0')->max('units')))->first()->id;
         }
         return $toAttack;
     }
