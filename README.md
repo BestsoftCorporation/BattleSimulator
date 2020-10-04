@@ -13,3 +13,5 @@ Battle Simulator API and Client made with Laravel php framework.
     Run php artisan serve
 
 #####You can now access Battle Simulator at localhost:8000 
+
+© Battle Simulator by Marko Stojkovic 

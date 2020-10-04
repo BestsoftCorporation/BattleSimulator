@@ -75,6 +75,7 @@ class StartGame extends Controller
     {
         if ($attacked['units'] != 1) {
             $damage = $attacker['units'] * 0.5;
+            //$_SESSION[$attacker]
             if ($attacked['units'] - $damage > 0) {
                 $attacked->update(['units' => $attacked['units'] - $damage]);
             } else {
