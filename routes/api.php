@@ -24,7 +24,6 @@ Route::resource('createGame','App\Http\Controllers\GameController');
 Route::resource('Army','App\Http\Controllers\ArmyController');
 Route::get('/startGame', StartGame::class);
 Route::get('/gameArmy/{id}', 'App\Http\Controllers\ArmyController@getGameArmy');
-Route::get('/startRound', 'App\Http\Controllers\StartGame@startRound');
 Route::get('/getGame', 'App\Http\Controllers\SessionController@getSession');
 
 

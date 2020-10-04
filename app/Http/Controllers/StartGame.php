@@ -60,8 +60,8 @@ class StartGame extends Controller
         $toAttack = 1;
         if ($value['strategy'] == 1) { //RANDOM
             
-            $toAttack=Army::select('id')->where('gameID', $_SESSION['game'])->where('id', '<>', $value['id'])->where('status', '<>', '0')->inRandomOrder()->first();
-           
+            $toAttack=Army::where('gameID', $_SESSION['game'])->where('id', '<>', $value['id'])->where('status', '<>', '0')->inRandomOrder()->first()->id;
+            
         } else if ($value['strategy'] == 2) { //WEAKEST
             $toAttack = Army::where('id', '<>', $value['id'])->where('gameID', $_SESSION['game'])->where('units', '=', (Army::select('units')->where('gameID', $_SESSION['game'])->where('id', '<>', $value['id'])->where('status', '<>', '0')->min('units')))->first()->id;
             
@@ -93,8 +93,5 @@ class StartGame extends Controller
         }
     }
 
-    public function startRound()
-    {
-        return (Army::all()[3]['strategy']);
-    }
+
 }

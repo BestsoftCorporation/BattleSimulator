@@ -44,9 +44,9 @@
     <button type="button" class="btn btn-primary" id="play" disabled>Play Round!</button>
     <ul id="ul" class="list-group">
     </ul>
-
+    <p>© Battle Simulator by Marko Stojkovic </p>
   </div>
-
+  
 
   <script>
     $("#play").click(function(e) {
@@ -81,20 +81,7 @@
           if (gameID != undefined) {
             $("#response").html("Game with id " + gameID + " created! Lets now add some armies to the game.");
             $("#armyForm").css("display", "block");
-            $.ajax({
-              type: "GET",
-              url: "/api/gameArmy/" + gameID,
-
-              success: function(data) {
-                $("#ul").html("");
-
-                jQuery.each(data, function(i, val) {
-                  $("#ul").append('<li class="list-group-item"><b>' + val.name + '</b>   <span style="color:red">units left:' + val.units + '</span>   <span style="color:green">attack strategy:' + val.strategy + '</span> </li>');
-                });
-
-              }
-
-            });
+            reloadF();
           }
         }
       });
@@ -109,7 +96,16 @@
           $("#ul").html("");
 
           jQuery.each(data, function(i, val) {
-            $("#ul").append('<li class="list-group-item"><b>' + val.name + '</b>   <span style="color:red">units left:' + val.units + '</span>   <span style="color:green">attack strategy:' + val.strategy + '</span> </li>');
+            
+
+            if (val.units == 0) {
+              $("#ul").append('<li class="list-group-item list-group-item-danger"><b>' + val.name + '</b>   <span style="color:red">units left:' + val.units + '</span>   <span style="color:green">attack strategy:' + val.strategy + '</span> <b>DEAD</b></li>');
+            }else{
+              $("#ul").append('<li class="list-group-item list-group-item-success"><b>' + val.name + '</b>   <span style="color:red">units left:' + val.units + '</span>   <span style="color:green">attack strategy:' + val.strategy + '</span> </li>');
+            }
+            if (i >= 4) {
+              document.getElementById("play").disabled = false;
+            }
           });
 
         }
@@ -144,18 +140,7 @@
 
         }
       });
-      $.ajax({
-        type: "GET",
-        url: "/api/gameArmy/" + gameID,
-        data: form.serialize(), // serializes the form's elements.
-        success: function(data) {
-          $("#ul").html("");
-          jQuery.each(data, function(i, val) {
-            $("#ul").append('<li class="list-group-item"><b>' + val.name + '</b>   <span style="color:red">units left:' + val.units + '</span>   <span style="color:green">attack strategy:' + val.strategy + '</span> </li>');
-          });
-
-        }
-      });
+      reloadF();
     });
     $("#armyForm").submit(function(e) {
 
@@ -186,21 +171,7 @@
         }
       });
 
-      $.ajax({
-        type: "GET",
-        url: "/api/gameArmy/" + gameID,
-        data: form.serialize(), // serializes the form's elements.
-        success: function(data) {
-          $("#ul").html("");
-          jQuery.each(data, function(i, val) {
-            $("#ul").append('<li class="list-group-item"><b>' + val.name + '</b>   <span style="color:red">units left:' + val.units + '</span>   <span style="color:green">attack strategy:' + val.strategy + '</span> </li>');
-            if (i >= 4) {
-              document.getElementById("play").disabled = false;
-            }
-          });
-
-        }
-      });
+      reloadF();
     });
   </script>
   </script>
