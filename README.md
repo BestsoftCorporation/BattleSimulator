@@ -2,14 +2,14 @@
 ## Battle Simulator
 
 Battle Simulator API and Client made with Laravel php framework.
-Once you download the project and get into project directory,
-You can start project by typing "php artisan serve"
 
-API FUNCTIONS:
-- You can see all games by calling GET API request "/api/createGame" or by calling POST, PUT or UPDATE to insert,delete and update
-- You can see all armies by calling GET API request "/api/Army" or  by calling POST, PUT or UPDATE request to insert,delete and update
+## How to run?
+    Rename .env.example file to .envinside your project root and fill the database information. 
+    Open the console and cd Battle Simulator root directory
+    Run composer install or php composer.phar install
+    Run php artisan key:generate
+    Run php artisan migrate
+    Run php artisan db:seed to run seeders, if any.
+    Run php artisan serve
 
-
-## CLIENT
-
-Client frontend is based on bootstrap. Its calling API from AJAX.
+#####You can now access Battle Simulator at localhost:8000 
