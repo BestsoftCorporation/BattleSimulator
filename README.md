@@ -4,7 +4,7 @@
 Battle Simulator API and Client made with Laravel php framework.
 
 ## How to run?
-    Rename .env.example file to .envinside your project root and fill the database information. 
+    Rename .env.example file to .env inside Battle Simulator root and fill the database information. 
     Open the console and cd Battle Simulator root directory
     Run composer install or php composer.phar install
     Run php artisan key:generate
