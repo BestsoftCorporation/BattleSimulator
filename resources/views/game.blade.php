@@ -94,7 +94,7 @@
 
         success: function(data) {
           gameID = data;
-          if (gameID != undefined) {
+          if (gameID != '') {
             $("#response").html("Game with id " + gameID + " created! Lets now add some armies to the game.");
             $("#armyForm").css("display", "block");
             reloadF();
