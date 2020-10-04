@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Game;
 
 
+
 class GameController extends Controller
 {
     /**
@@ -15,7 +16,8 @@ class GameController extends Controller
      */
     public function index()
     {
-       return Game::all();
+      
+       return  Game::all();
     }
 
     /**
@@ -26,7 +28,11 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        return Game::create();
+        $game=Game::create();
+        $_SESSION['game']=$game->id;
+        $_SESSION['army'] = -1;
+        //return session('game');
+        return $game;
         
     }
 

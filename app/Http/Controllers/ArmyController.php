@@ -25,7 +25,11 @@ class ArmyController extends Controller
      */
     public function store(Request $request)
     {
-        return Army::create($request->all());
+        $data = $request->all();
+        if (isset($_SESSION['game'])){
+            $data['gameID'] = $_SESSION['game'];
+        }
+        return Army::create($data);
     }
 
     /**
