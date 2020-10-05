@@ -43,8 +43,10 @@
         </select>
       </div>
       <input type='hidden' name='gameID' id='gameID' value='18'>
-      <button type="submit" class="btn btn-default">Create</button>
+      <button type="submit" class="btn btn-default">Create Army</button>
     </form>
+    <label class="form-check-label" for="autorun">Autorun</label>
+    <input type="checkbox" class="form-check-input" id="autorun">
     <button type="button" class="btn btn-primary" id="play" disabled>Play Round!</button>
     <ul id="ul" class="list-group">
     </ul>
@@ -56,6 +58,7 @@
     var active = null;
     var attacked = null;
     var mess = "";
+    var inter;
     $("#play").click(function(e) {
       e.preventDefault();
       $.ajax({
@@ -64,13 +67,11 @@
         dataType: 'json',
 
         success: function(result) {
-          // var json = $.parseJSON(result); // create an object with the key of the array
-          // alert(json);
-          //alert(result['message']);
+        
           $("#response").html(result['message']);
           mess = result['message'];
           if (mess.includes("won")) {
-            alert(mess);
+            clearInterval(inter); 
           }
           if (result['message'].includes('vs')) {
             var res = result['message'].split("vs");
@@ -81,9 +82,15 @@
           reloadF();
         },
         error: function(result) {
-          alert('error');
+          //alert('error');
         }
       });
+      if (document.getElementById("autorun").checked == true) {
+
+        inter = setInterval(function() {
+          document.getElementById("play").click();
+        }, 2000);
+      }
     });
 
     var gameID;
@@ -110,7 +117,7 @@
 
         success: function(data) {
           $("#ul").html("");
-          $("#response").html("");
+         
           var attack = "";
           var vic = "";
           jQuery.each(data, function(i, val) {
@@ -155,9 +162,9 @@
     }
 
     $("#gameForm").submit(function(e) {
-
+    
       e.preventDefault(); // avoid to execute the actual submit of the form.
-
+      document.getElementById("play").disabled = true;
       var form = $(this);
       var url = form.attr('action');
 
