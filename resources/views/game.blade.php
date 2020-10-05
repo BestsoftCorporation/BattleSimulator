@@ -14,7 +14,7 @@
 <body>
 
   <div class="container">
-    <h2>Battle Simulator | Create Game</h2>
+    <h2>Battle Simulator </h2>
     <form id="gameForm" name="gameForm" action="/api/createGame">
       @csrf
       <button type="submit" class="btn btn-primary" class="btn btn-default">Create Game </button>
